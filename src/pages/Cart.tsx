@@ -153,13 +153,13 @@ const Cart = () => {
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">رقم الهاتف *</label>
-                  <input required type="tel" value={formData.customer_phone} onChange={(e) => setFormData({...formData, customer_phone: e.target.value})} className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-all" placeholder="05x xxx xxxx" />
+                  <input required type="tel" value={formData.customer_phone} onChange={(e) => setFormData({...formData, customer_phone: e.target.value})} className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-all" placeholder="09x xxx xxxx" />
                 </div>
               </div>
               
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">المدينة *</label>
-                <input required type="text" value={formData.customer_city} onChange={(e) => setFormData({...formData, customer_city: e.target.value})} className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-all" placeholder="مثال: الرياض" />
+                <input required type="text" value={formData.customer_city} onChange={(e) => setFormData({...formData, customer_city: e.target.value})} className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-all" placeholder="مثال: طرابلس" />
               </div>
 
               <div>
