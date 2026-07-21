@@ -24,8 +24,8 @@ const AdminLayout = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 flex" dir="rtl">
-      {/* Sidebar */}
-      <div className="w-64 bg-white border-l border-gray-200 flex flex-col hidden md:flex">
+      {/* Sidebar - Desktop */}
+      <div className="w-64 bg-white border-l border-gray-200 flex flex-col hidden md:flex flex-shrink-0">
         <div className="h-16 flex items-center px-6 border-b border-gray-200">
           <Store className="w-6 h-6 text-primary-600 ml-2" />
           <span className="text-xl font-bold text-gray-900">إدارة المتجر</span>
@@ -53,6 +53,13 @@ const AdminLayout = () => {
         </nav>
 
         <div className="p-4 border-t border-gray-200">
+          <Link
+            to="/"
+            className="flex w-full items-center px-4 py-3 text-sm font-medium text-gray-600 rounded-lg hover:bg-gray-50 transition-colors mb-1"
+          >
+            <LayoutDashboard className="w-5 h-5 ml-3 text-gray-400" />
+            عرض المتجر
+          </Link>
           <button
             onClick={handleLogout}
             className="flex w-full items-center px-4 py-3 text-sm font-medium text-red-600 rounded-lg hover:bg-red-50 transition-colors cursor-pointer outline-none"
@@ -64,20 +71,45 @@ const AdminLayout = () => {
       </div>
 
       {/* Main Content */}
-      <div className="flex-1 flex flex-col overflow-hidden">
+      <div className="flex-1 flex flex-col overflow-hidden min-w-0">
         {/* Mobile Header */}
-        <div className="md:hidden h-16 bg-white border-b border-gray-200 flex items-center justify-between px-4">
+        <div className="md:hidden h-14 bg-white border-b border-gray-200 flex items-center justify-between px-4 flex-shrink-0">
           <div className="flex items-center">
-            <Store className="w-6 h-6 text-primary-600 ml-2" />
-            <span className="text-lg font-bold text-gray-900">إدارة المتجر</span>
+            <Store className="w-5 h-5 text-primary-600 ml-2" />
+            <span className="text-base font-bold text-gray-900">إدارة المتجر</span>
           </div>
-          <button onClick={handleLogout} className="p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors outline-none">
-            <LogOut className="w-5 h-5" />
-          </button>
+          <div className="flex items-center gap-2">
+            <Link to="/" className="p-2 text-gray-500 hover:bg-gray-100 rounded-lg transition-colors">
+              <LayoutDashboard className="w-5 h-5" />
+            </Link>
+            <button onClick={handleLogout} className="p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors outline-none">
+              <LogOut className="w-5 h-5" />
+            </button>
+          </div>
+        </div>
+
+        {/* Mobile Bottom Navigation */}
+        <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-40 flex">
+          {navigation.map((item) => {
+            const isActive = location.pathname === item.href;
+            const Icon = item.icon;
+            return (
+              <Link
+                key={item.name}
+                to={item.href}
+                className={`flex-1 flex flex-col items-center py-3 text-xs font-medium transition-colors ${
+                  isActive ? 'text-primary-600' : 'text-gray-500 hover:text-gray-700'
+                }`}
+              >
+                <Icon className={`w-5 h-5 mb-1 ${isActive ? 'text-primary-600' : 'text-gray-400'}`} />
+                {item.name}
+              </Link>
+            );
+          })}
         </div>
 
         {/* Page Content */}
-        <main className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8">
+        <main className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8 pb-20 md:pb-8">
           <Outlet />
         </main>
       </div>

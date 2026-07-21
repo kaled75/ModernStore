@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { ShoppingCart, Search, Menu, User, LayoutDashboard, LogOut, Lock } from 'lucide-react';
+import { ShoppingCart, Search, Menu, User, LayoutDashboard, LogOut, Lock, X } from 'lucide-react';
 import { useCartStore } from '../store/useCartStore';
 import { supabase } from '../lib/supabase';
 
@@ -10,8 +10,11 @@ const Navbar = () => {
   const [storeName, setStoreName] = useState('متجرنا');
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
   const [session, setSession] = useState<any>(null);
   const userMenuRef = useRef<HTMLDivElement>(null);
+  const searchInputRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -50,14 +53,55 @@ const Navbar = () => {
     };
   }, []);
 
+  // Focus search input when opened
+  useEffect(() => {
+    if (isSearchOpen && searchInputRef.current) {
+      searchInputRef.current.focus();
+    }
+  }, [isSearchOpen]);
+
   const handleLogout = async () => {
     await supabase.auth.signOut();
     setIsUserMenuOpen(false);
     navigate('/');
   };
 
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      navigate(`/products?search=${encodeURIComponent(searchQuery.trim())}`);
+      setIsSearchOpen(false);
+      setSearchQuery('');
+    }
+  };
+
   return (
     <nav className="bg-white shadow-sm sticky top-0 z-50">
+      {/* Search Overlay */}
+      {isSearchOpen && (
+        <div className="absolute inset-0 bg-white z-10 flex items-center px-4 sm:px-6 lg:px-8" style={{ height: '64px' }}>
+          <form onSubmit={handleSearch} className="flex-1 flex items-center gap-3">
+            <Search className="w-5 h-5 text-gray-400 flex-shrink-0" />
+            <input
+              ref={searchInputRef}
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="ابحث عن منتج..."
+              className="flex-1 outline-none text-gray-900 text-lg"
+              dir="rtl"
+            />
+            <button
+              type="button"
+              onClick={() => { setIsSearchOpen(false); setSearchQuery(''); }}
+              className="text-gray-400 hover:text-gray-600 p-2"
+            >
+              <X className="w-5 h-5" />
+            </button>
+          </form>
+        </div>
+      )}
+
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
@@ -85,7 +129,11 @@ const Navbar = () => {
 
           {/* Icons */}
           <div className="flex items-center space-x-4 space-x-reverse">
-            <button className="text-gray-500 hover:text-primary-600 p-2 transition-colors">
+            <button
+              onClick={() => setIsSearchOpen(true)}
+              className="text-gray-500 hover:text-primary-600 p-2 transition-colors"
+              title="بحث"
+            >
               <Search className="w-5 h-5" />
             </button>
             
