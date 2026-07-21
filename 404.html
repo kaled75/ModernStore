@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <title>ModernStore</title>
+    <script type="text/javascript">
+      var path = window.location.pathname;
+      var repo = '/ModernStore';
+      var segment = path.startsWith(repo) ? path.substring(repo.length) : path;
+      if (!segment.startsWith('/')) segment = '/' + segment;
+      window.location.replace(repo + '/#' + segment + window.location.search + window.location.hash);
+    </script>
+  </head>
+  <body>
+  </body>
+</html>
