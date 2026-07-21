@@ -1,5 +1,4 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { HashRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Layout from './components/Layout';
 import AdminLayout from './components/AdminLayout';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -18,7 +17,7 @@ import Login from './pages/admin/Login';
 
 const App = () => {
   return (
-    <Router basename={import.meta.env.BASE_URL}>
+    <Router>
       <DialogContainer />
       <Routes>
         {/* Public Routes */}
