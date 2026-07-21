@@ -1,25 +1,52 @@
 import React from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import Layout from './components/Layout';
+import AdminLayout from './components/AdminLayout';
+import ProtectedRoute from './components/ProtectedRoute';
+import DialogContainer from './components/DialogContainer';
+import Home from './pages/Home';
+import Products from './pages/Products';
+import ProductDetail from './pages/ProductDetail';
+import Cart from './pages/Cart';
+import About from './pages/About';
+import Contact from './pages/Contact';
+import TextPage from './pages/TextPage';
+import AdminDashboard from './pages/admin/Dashboard';
+import AdminOrders from './pages/admin/Orders';
+import AdminSettings from './pages/admin/Settings';
+import Login from './pages/admin/Login';
 
 const App = () => {
   return (
-    <div className="min-h-screen bg-white flex flex-col items-center justify-center p-4">
-      <div className="max-w-2xl text-center space-y-6">
-        <h1 className="text-5xl font-bold text-gray-900">ModernStore</h1>
-        <p className="text-xl text-gray-600">
-          Your scalable, modern e-commerce platform is ready! 🚀
-        </p>
-        <div className="flex gap-4 justify-center pt-8">
-          <div className="p-6 bg-blue-50 rounded-xl">
-            <h3 className="font-bold text-blue-900 mb-2">1. GitHub Pages Ready</h3>
-            <p className="text-blue-800 text-sm">Configured with GitHub Actions for instant deployment.</p>
-          </div>
-          <div className="p-6 bg-green-50 rounded-xl">
-            <h3 className="font-bold text-green-900 mb-2">2. Supabase Ready</h3>
-            <p className="text-green-800 text-sm">Schema and RLS policies included in supabase folder.</p>
-          </div>
-        </div>
-      </div>
-    </div>
+    <Router basename={import.meta.env.BASE_URL}>
+      <DialogContainer />
+      <Routes>
+        {/* Public Routes */}
+        <Route path="/" element={<Layout />}>
+          <Route index element={<Home />} />
+          <Route path="products" element={<Products />} />
+          <Route path="products/:id" element={<ProductDetail />} />
+          <Route path="cart" element={<Cart />} />
+          <Route path="about" element={<About />} />
+          <Route path="contact" element={<Contact />} />
+          <Route path="faq" element={<TextPage title="الأسئلة الشائعة" settingKey="faq_text" />} />
+          <Route path="shipping" element={<TextPage title="سياسة الشحن" settingKey="shipping_text" />} />
+          <Route path="returns" element={<TextPage title="سياسة الاسترجاع" settingKey="returns_text" />} />
+        </Route>
+
+        {/* Admin Login */}
+        <Route path="/admin/login" element={<Login />} />
+
+        {/* Protected Admin Routes */}
+        <Route path="/admin" element={<ProtectedRoute><AdminLayout /></ProtectedRoute>}>
+          <Route index element={<Navigate to="/admin/products" replace />} />
+          <Route path="products" element={<AdminDashboard />} />
+          <Route path="orders" element={<AdminOrders />} />
+          <Route path="settings" element={<AdminSettings />} />
+          <Route path="*" element={<div className="p-8 text-center text-gray-500">هذه الصفحة قيد التطوير</div>} />
+        </Route>
+      </Routes>
+    </Router>
   );
 };
 

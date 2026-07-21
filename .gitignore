@@ -11,6 +11,13 @@ node_modules
 dist
 dist-ssr
 *.local
+.env
+.env.*
+!.env.example
+
+# Test & Scratch files
+test-supabase.*
+مستند نصي جديد.txt
 
 # Editor directories and files
 .vscode/*
