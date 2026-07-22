@@ -23,7 +23,7 @@ const AdminSettings = () => {
   const [draggedWidgetId, setDraggedWidgetId] = useState<string | null>(null);
   const [isWidgetModalOpen, setIsWidgetModalOpen] = useState(false);
   const [editingWidget, setEditingWidget] = useState<Widget | null>(null);
-  const [widgetForm, setWidgetForm] = useState({ title: '', content: '', type: 'custom_text' as 'custom_text' | 'price_filter' | 'banner' });
+  const [widgetForm, setWidgetForm] = useState<{ title: string; content: string; type: Widget['type'] }>({ title: '', content: '', type: 'custom_text' });
 
   // Account State
   const [passwordForm, setPasswordForm] = useState({ newPassword: '', confirmPassword: '' });
@@ -849,7 +849,7 @@ const AdminSettings = () => {
                   <label className="block text-sm font-medium text-gray-700 mb-1">النوع *</label>
                   <select 
                     value={widgetForm.type}
-                    onChange={(e) => setWidgetForm({...widgetForm, type: e.target.value as any})}
+                    onChange={(e) => setWidgetForm({...widgetForm, type: e.target.value as Widget['type']})}
                     className="w-full px-4 py-2.5 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary-500 outline-none" 
                   >
                     <option value="custom_text">نص مخصص / HTML</option>
